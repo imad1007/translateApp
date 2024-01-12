@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import soundPic from './assets/reuirement/sound_max_fill.svg';
 import copyPic from './assets/reuirement/Copy.svg';
 import exchange from './assets/reuirement/Horizontal_top_left_main.svg';
-import sort from './assets/reuirement/expand_down.svg';
+import sort from './assets/reuirement/Expand_down.svg';
 import languages from './assets/languages.js';
 
 import './App.css'
