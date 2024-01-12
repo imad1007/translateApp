@@ -19,7 +19,8 @@
 .container{
     position: relative;
     width: 100%;
-    height: 100vh;
+    height: auto;
+    min-height: 100vh;
     background-image: url('./assets/reuirement/hero_img.jpg');
     background-repeat: no-repeat;
     background-size: cover;
@@ -67,9 +68,9 @@
 
 }
 .textSection,.translateTextSection{
-    width: 40%;
-    min-width: 400px;
-    min-height: 55vh;
+    width: 45%;
+    min-width: 300px;
+    min-height: 40vh;
     border: 1px solid #4D5562;
     border-radius: 20px;
     display: flex;
@@ -83,17 +84,17 @@
     display: flex;
     flex-direction: row;
     justify-content: start;
-    gap: 10px;
-    padding: 10px;
+    gap: 5px;
+    padding: 8px;
     border-bottom: 1px solid #313944ea;
 }
 .language_nav button,select{
     border: none;
     background: none;
     color: #7a818bea;
-    padding: 10px;
+    padding: 8px;
     border-radius: 10px;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
 }
@@ -125,6 +126,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px;
+    
 }
 .buttom_elements .left_elements{
     display: flex;
@@ -158,7 +160,7 @@
     margin-left: auto;
 
 }
-.translateTextSection_body p{
+.translateTextSection_body textarea{
     width: 100%;
     height: 30vh;
     resize: none;
@@ -175,10 +177,53 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
+    padding: 15px;
+    
 }
 .translateTextSection_bottom_elemnts .left_elements{
     display: flex;
     gap: 10px;
     align-items: center;
+}
+
+.text_copied_Popup{
+    position: absolute;
+    display: flex;
+    background-color: #383d52;
+    width: 300px;
+    height: 20vh;
+    border-radius: 15px;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 16px;
+    
+
+}
+.text_copied_Popup i{
+    color: rgb(22, 201, 141);
+}
+.text_copied_Popup p{
+    color: white;
+}
+
+@media(max-width:450px){
+    .container{
+        gap: 5px;
+    }
+    .textSection,.translateTextSection{
+        width: 45%;
+        min-height: 30vh;
+        padding: 5px;
+    }
+    .text_input textarea{
+        width: 100%;
+        height: 20vh;
+        padding: 5px;
+    }
+    .translateTextSection_body textarea{
+        width: 100%;
+        height: 20vh;
+        padding: 5px;
+    }
 }

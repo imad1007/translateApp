@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import soundPic from './assets/reuirement/sound_max_fill.svg';
 import copyPic from './assets/reuirement/Copy.svg';
 import exchange from './assets/reuirement/Horizontal_top_left_main.svg';
 import sort from './assets/reuirement/Expand_down.svg';
 import languages from './assets/languages.js';
+
 
 import './App.css'
 
@@ -27,16 +28,23 @@ function App() {
   const [textLanguage, setTextLanguage] = useState({ label: languages[0].label, code: languages[0].code });
 
   //this state responsible for changing the translate text we have get by response
-  const [translateLanguage, settranslateLanguage] = useState({ label: languages[1].label, code: languages[1].code });
+  const [translateLanguage, setTranslateLanguage] = useState({ label: languages[1].label, code: languages[1].code });
 
   //this state responsible for changing the state of translate action so whene we change it's value the useEffect replay and will take the new parameteres like the translate language and the text language 
   const [translate, setTranslate] = useState(true)
 
+  //gite the current value of text area
+  const copytextarea = useRef(null)
+  const copytranslatearea = useRef(null)
+
+
+  //text copied popup message
+  const [copiesMessage,setCopiedMessage] = useState({display:'none'})
+
 
   const handlConverLanguage=()=>{
-    const index = textLanguage;
-    setTextLanguage()
-    translateLanguage()
+    setTextLanguage(translateLanguage);
+    setTranslateLanguage(textLanguage);
   }
 
 
@@ -70,19 +78,82 @@ function App() {
 
   //this function responsible for closing the translate language selector drop down and take a new translate language value
   const handleChoseLtranslateanguage = (e) => {
-    settranslateLanguage({ code: e.target.id, label: e.target.value })
+    setTranslateLanguage({ code: e.target.id, label: e.target.value })
     setSelectorDesplaytranslate({ display: 'none' })
   }
+
+
+  //text to speech
+  const handlTextTospeech=()=>{
+    if ('speechSynthesis' in window) {
+      const synth = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(text);
+
+      // Set the language code
+      utterance.lang = textLanguage.code;
+
+      // Optionally, you can set additional properties of the utterance, like rate, pitch, etc.
+
+      synth.speak(utterance);
+    } else {
+      alert('Text-to-speech is not supported in this browser.');
+    }
+
+  }
+
+  //translated text to speech
+  const handlTranslatedTextTospeech=()=>{
+    if ('speechSynthesis' in window) {
+      const synth = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(translatedtext);
+
+      // Set the language code
+      utterance.lang = translateLanguage.code;
+
+      // Optionally, you can set additional properties of the utterance, like rate, pitch, etc.
+
+      synth.speak(utterance);
+    } else {
+      alert('Text-to-speech is not supported in this browser.');
+    }
+
+  }
+
+
+  const handlcCopieText = ()=>{
+    if(copytextarea.current){
+      copytextarea.current.select();
+      document.execCommand('copy');
+      setCopiedMessage({display:'flex'});
+      setTimeout(()=>
+      setCopiedMessage({display:'none'}),2000)
+    }
+  }
+  const handlcCopieTranslatedText = ()=>{
+    if(copytranslatearea.current){
+      copytranslatearea.current.select();
+      document.execCommand('copy');
+      setCopiedMessage({display:'flex'});
+      setTimeout(()=>
+      setCopiedMessage({display:'none'}),2000)
+    }
+  }
+
+  
+
 
 
 
   return (
     <div className="container">
+      <div className="text_copied_Popup" style={copiesMessage}>
+        <i class="fa-regular fa-circle-check"></i><p>Text has been copied</p>
+      </div>
       {/*text language drop down */}
       <div className="langages" id="languageDropDow" style={selectorDisplay}>
         <ul>
           <div style={{ display: 'flex', justifyContent: 'end', padding: '10px', color: '#c5c5c5ea' }}>
-            <i class="fa-solid fa-xmark" style={{ width: '30px', padding: '4px', border: '2px solid #c5c5c5ea', borderRadius: '4px', cursor: 'pointer', textAlign: 'center' }} onClick={() => setSelectorDesplay({ display: 'none' })}></i>
+            <i className="fa-solid fa-xmark" style={{ width: '30px', padding: '4px', border: '2px solid #c5c5c5ea', borderRadius: '4px', cursor: 'pointer', textAlign: 'center' }} onClick={() => setSelectorDesplay({ display: 'none' })}></i>
           </div>
           {
             languages.map((item, index) => (
@@ -97,7 +168,7 @@ function App() {
       <div className="langagesTranslat" id="languageDropDow" style={selectorDisplaytranslate}>
             <ul>
               <div style={{ display: 'flex', justifyContent: 'end', padding: '10px', color: '#c5c5c5ea' }}>
-                <i class="fa-solid fa-xmark" style={{ width: '30px', padding: '4px', border: '2px solid #c5c5c5ea', borderRadius: '4px', cursor: 'pointer', textAlign: 'center' }} onClick={() => setSelectorDesplaytranslate({ display: 'none' })}></i>
+                <i className="fa-solid fa-xmark" style={{ width: '30px', padding: '4px', border: '2px solid #c5c5c5ea', borderRadius: '4px', cursor: 'pointer', textAlign: 'center' }} onClick={() => setSelectorDesplaytranslate({ display: 'none' })}></i>
               </div>
               {
                 languages.map((item, index) => (
@@ -112,19 +183,19 @@ function App() {
       <div className="textSection">
         <div className="language_nav">
            {/* languages navbar */}
-          <button>Detect Language</button>
+          <button> Language</button>
           <button> {textLanguage.label} </button>
           <button>Frensh</button>
           <button style={{display:'flex',alignItems:'center'}} onClick={() => setSelectorDesplay({ display: 'block' })}> {languages[0].label} <img src={sort} alt="" /> </button>
         </div>
         <div className="text_input" >
           <p className="caracters_number" style={{ color: '#656b74ea', position: 'absolute', left: '90%', top: '90%', fontSize: '12px' }}  > {textAreaLength}/500</p>
-          <textarea name="" id="" cols="30" rows="10" value={text} maxLength={500} onChange={handleTextChange} ></textarea>
+          <textarea ref={copytextarea} name="" id="" cols="30" rows="10" value={text} maxLength={500} onChange={handleTextChange} ></textarea>
         </div>
         <div className="buttom_elements">
           <div className="left_elements">
-            <img src={soundPic} alt="" />
-            <img src={copyPic} alt="" />
+            <img src={soundPic} onClick={handlTextTospeech} alt="" />
+            <img src={copyPic} onClick={handlcCopieText} alt="" />
           </div>
           <div className="right_eleemnts">
             <button onClick={() => setTranslate(!translate)}>
@@ -142,17 +213,15 @@ function App() {
           <button> {translateLanguage.label} </button>
           <button>Frensh</button>
           <button style={{display:'flex',alignItems:'center'}} onClick={() => setSelectorDesplaytranslate({ display: 'block' })}>{languages[0].label }  <img src={sort} alt="" /></button>
-          <img id="exchange" src={exchange} alt=""  />
+          <img id="exchange" src={exchange} alt="" onClick={handlConverLanguage}  />
         </div>
         <div className="translateTextSection_body">
-          <p>
-            {translatedtext}
-          </p>
+          <textarea name="" id="" value={translatedtext} cols="30" rows="10" disabled={true}></textarea>
         </div>
         <div className="translateTextSection_bottom_elemnts">
           <div className="left_elements">
-            <img src={soundPic} alt="" />
-            <img src={copyPic} alt="" />
+            <img src={soundPic} onClick={handlTranslatedTextTospeech} alt="" />
+            <img src={copyPic} alt="" onClick={handlcCopieTranslatedText} />
           </div>
         </div>
       </div>
