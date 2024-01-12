@@ -4,6 +4,7 @@ import copyPic from './assets/reuirement/Copy.svg';
 import exchange from './assets/reuirement/Horizontal_top_left_main.svg';
 import sort from './assets/reuirement/Expand_down.svg';
 import languages from './assets/languages.js';
+import logo from './assets/reuirement/logo.svg';
 
 
 import './App.css'
@@ -145,9 +146,13 @@ function App() {
 
 
   return (
+    <>
+    <div className="all">
+      
+    </div>
     <div className="container">
       <div className="text_copied_Popup" style={copiesMessage}>
-        <i class="fa-regular fa-circle-check"></i><p>Text has been copied</p>
+        <i className="fa-regular fa-circle-check"></i><p>Text has been copied</p>
       </div>
       {/*text language drop down */}
       <div className="langages" id="languageDropDow" style={selectorDisplay}>
@@ -183,8 +188,8 @@ function App() {
       <div className="textSection">
         <div className="language_nav">
            {/* languages navbar */}
-          <button> Language</button>
-          <button> {textLanguage.label} </button>
+          <button >Detect Language</button>
+          <button style={{backgroundColor:'#3b414bea',color:'#c5c5c5ea'}}> {textLanguage.label} </button>
           <button>Frensh</button>
           <button style={{display:'flex',alignItems:'center'}} onClick={() => setSelectorDesplay({ display: 'block' })}> {languages[0].label} <img src={sort} alt="" /> </button>
         </div>
@@ -210,13 +215,13 @@ function App() {
       <div className="translateTextSection">
         <div className="language_nav">
           {/* languages navbar */}
-          <button> {translateLanguage.label} </button>
+          <button style={{backgroundColor:'#3b414bea',color:'#c5c5c5ea'}}> {translateLanguage.label} </button>
           <button>Frensh</button>
           <button style={{display:'flex',alignItems:'center'}} onClick={() => setSelectorDesplaytranslate({ display: 'block' })}>{languages[0].label }  <img src={sort} alt="" /></button>
           <img id="exchange" src={exchange} alt="" onClick={handlConverLanguage}  />
         </div>
         <div className="translateTextSection_body">
-          <textarea name="" id="" value={translatedtext} cols="30" rows="10" disabled={true}></textarea>
+          <textarea name="" ref={copytranslatearea} id="" value={translatedtext} cols="30" rows="10" disabled={true}></textarea>
         </div>
         <div className="translateTextSection_bottom_elemnts">
           <div className="left_elements">
@@ -229,7 +234,7 @@ function App() {
 
 
     </div>
-  )
+    </>)
 }
 
 export default App

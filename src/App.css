@@ -16,6 +16,7 @@
     box-sizing: border-box;
     font-family: 'Ronoto',sans-serif;
 }
+
 .container{
     position: relative;
     width: 100%;
@@ -29,6 +30,7 @@
     justify-content: center;
     flex-wrap: wrap;
     gap: 20px;
+    padding: 10px;
 }
 .langages{
     position: absolute;
@@ -94,9 +96,10 @@
     color: #7a818bea;
     padding: 8px;
     border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 12px;
+    font-weight: 400;
     cursor: pointer;
+   
 }
 .language_nav button:hover,select:hover{
     background-color: #3b414bea;
@@ -207,15 +210,20 @@
     color: white;
 }
 
-@media(max-width:450px){
+@media(max-width:847px){
     .container{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         flex-wrap: wrap;
-        gap: 5px;
+        gap: 10px;
+        height: 40vh;
+
+        
     }
     .textSection,.translateTextSection{
-        width: 45%;
-        min-width: 350px;
-        min-height: 45vh;
+        width: 80%;
+        min-height: auto;
         padding: 5px;
     }
     .text_input textarea{
