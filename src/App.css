@@ -232,7 +232,7 @@
         height: 10vh;
     }
     .logo img{
-        width: 20%;
+        width: 150px;
     }
     .container{
         display: flex;
