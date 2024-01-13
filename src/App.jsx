@@ -29,7 +29,7 @@ function App() {
   const [textLanguage, setTextLanguage] = useState({ label: languages[0].label, code: languages[0].code });
 
   //this state responsible for changing the translate text we have get by response
-  const [translateLanguage, setTranslateLanguage] = useState({ label: languages[1].label, code: languages[1].code });
+  const [translateLanguage, setTranslateLanguage] = useState({ label: languages[2].label, code: languages[2].code });
 
   //this state responsible for changing the state of translate action so whene we change it's value the useEffect replay and will take the new parameteres like the translate language and the text language 
   const [translate, setTranslate] = useState(true)
@@ -42,6 +42,8 @@ function App() {
   //text copied popup message
   const [copiesMessage,setCopiedMessage] = useState({display:'none'})
 
+  //arabic text direction
+  const [arabicTextDirection,setArabicTextDirection] = useState([{direction:'ltr'},{direction:'ltr'}]);
 
   const handlConverLanguage=()=>{
     setTextLanguage(translateLanguage);
@@ -74,12 +76,19 @@ function App() {
   //this function responsible for closing the text language selector drop down and take a new text language value
   const handleChoseLtextanguage = (e) => {
     setTextLanguage({ code: e.target.id, label: e.target.value })
+
+     //checking if the text are arabic
+     e.target.id==='ar'?setArabicTextDirection(arabicTextDirection[0]={direction:'rtl'}):'';
+
     setSelectorDesplay({ display: 'none' })
   }
 
   //this function responsible for closing the translate language selector drop down and take a new translate language value
   const handleChoseLtranslateanguage = (e) => {
     setTranslateLanguage({ code: e.target.id, label: e.target.value })
+    
+    //checking if the text are arabic
+    e.target.id==='ar'?setArabicTextDirection(arabicTextDirection[1]={direction:'rtl'}):'';
     setSelectorDesplaytranslate({ display: 'none' })
   }
 
@@ -107,12 +116,7 @@ function App() {
     if ('speechSynthesis' in window) {
       const synth = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(translatedtext);
-
-      // Set the language code
       utterance.lang = translateLanguage.code;
-
-      // Optionally, you can set additional properties of the utterance, like rate, pitch, etc.
-
       synth.speak(utterance);
     } else {
       alert('Text-to-speech is not supported in this browser.');
@@ -130,6 +134,7 @@ function App() {
       setCopiedMessage({display:'none'}),2000)
     }
   }
+
   const handlcCopieTranslatedText = ()=>{
     if(copytranslatearea.current){
       copytranslatearea.current.select();
@@ -140,16 +145,21 @@ function App() {
     }
   }
 
+  const arabicTextOptimization=()=>{
+
+  }
+
   
 
 
 
 
   return (
-    <>
+    
     <div className="all">
-      
-    </div>
+      <div className="logo">
+        <img src={logo} alt="" />
+      </div>
     <div className="container">
       <div className="text_copied_Popup" style={copiesMessage}>
         <i className="fa-regular fa-circle-check"></i><p>Text has been copied</p>
@@ -190,12 +200,12 @@ function App() {
            {/* languages navbar */}
           <button >Detect Language</button>
           <button style={{backgroundColor:'#3b414bea',color:'#c5c5c5ea'}}> {textLanguage.label} </button>
-          <button>Frensh</button>
+          <button>Arabic</button>
           <button style={{display:'flex',alignItems:'center'}} onClick={() => setSelectorDesplay({ display: 'block' })}> {languages[0].label} <img src={sort} alt="" /> </button>
         </div>
         <div className="text_input" >
-          <p className="caracters_number" style={{ color: '#656b74ea', position: 'absolute', left: '90%', top: '90%', fontSize: '12px' }}  > {textAreaLength}/500</p>
-          <textarea ref={copytextarea} name="" id="" cols="30" rows="10" value={text} maxLength={500} onChange={handleTextChange} ></textarea>
+          <p className="caracters_number" style={{ color: '#656b74ea', position: 'absolute', left: '85%', top: '90%', fontSize: '12px' }}  > {textAreaLength}/500</p>
+          <textarea style={arabicTextDirection[0]} ref={copytextarea} name="" id="" cols="30" rows="10" value={text} maxLength={500} onChange={handleTextChange} ></textarea>
         </div>
         <div className="buttom_elements">
           <div className="left_elements">
@@ -221,7 +231,8 @@ function App() {
           <img id="exchange" src={exchange} alt="" onClick={handlConverLanguage}  />
         </div>
         <div className="translateTextSection_body">
-          <textarea name="" ref={copytranslatearea} id="" value={translatedtext} cols="30" rows="10" disabled={true}></textarea>
+          
+          <textarea style={arabicTextDirection[1]} name="" ref={copytranslatearea} id="" value={translatedtext} cols="30" rows="10" disabled={true}></textarea>
         </div>
         <div className="translateTextSection_bottom_elemnts">
           <div className="left_elements">
@@ -230,11 +241,9 @@ function App() {
           </div>
         </div>
       </div>
-
-
-
     </div>
-    </>)
+    </div>
+   )
 }
 
 export default App

@@ -17,7 +17,7 @@
     font-family: 'Ronoto',sans-serif;
 }
 
-.container{
+.all{
     position: relative;
     width: 100%;
     height: auto;
@@ -25,6 +25,24 @@
     background-image: url('./assets/reuirement/hero_img.jpg');
     background-repeat: no-repeat;
     background-size: cover;
+   
+
+}
+.logo{
+    height: 20vh;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+}
+.logo img{
+    width: 15%;
+}
+
+.container{
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-height: 80vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -71,7 +89,6 @@
 }
 .textSection,.translateTextSection{
     width: 45%;
-    min-width: 400px;
     min-height: 40vh;
     border: 1px solid #4D5562;
     border-radius: 20px;
@@ -211,22 +228,28 @@
 }
 
 @media(max-width:847px){
+    .logo{
+        height: 10vh;
+    }
+    .logo img{
+        width: 20%;
+    }
     .container{
         display: flex;
+        height: 90vh;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         flex-wrap: wrap;
         gap: 10px;
-        height: 40vh;
-       
-
         
     }
     .textSection,.translateTextSection{
-        width: 80%;
+        width: 100%;
+        min-width: 300px;
         min-height: auto;
         padding: 5px;
+        
         
         
        
